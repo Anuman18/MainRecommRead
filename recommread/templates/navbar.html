@@ -1,0 +1,50 @@
+<nav class="bg-blue-600 text-white shadow-lg">
+    <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center py-4">
+            <!-- Logo -->
+            <a href="{{ url_for('index') }}" class="flex items-center space-x-2 text-xl font-bold">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+                <span>RecommRead</span>
+            </a>
+            
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex space-x-6">
+                <a href="{{ url_for('index') }}" class="hover:text-blue-200 transition-colors py-2">Home</a>
+                <a href="{{ url_for('recommend') }}" class="hover:text-blue-200 transition-colors py-2">Recommend</a>
+                <a href="{{ url_for('search') }}" class="hover:text-blue-200 transition-colors py-2">Search</a>
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('post') }}" class="hover:text-blue-200 transition-colors py-2">Post Story</a>
+                    <a href="{{ url_for('logout') }}" class="hover:text-blue-200 transition-colors py-2">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="hover:text-blue-200 transition-colors py-2">Login</a>
+                    <a href="{{ url_for('signup') }}" class="hover:text-blue-200 transition-colors py-2">Sign Up</a>
+                {% endif %}
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none" aria-expanded="false">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden hidden pb-4">
+            <a href="{{ url_for('index') }}" class="block py-2 hover:bg-blue-700 px-2 rounded transition-colors">Home</a>
+            <a href="{{ url_for('recommend') }}" class="block py-2 hover:bg-blue-700 px-2 rounded transition-colors">Recommend</a>
+            <a href="{{ url_for('search') }}" class="block py-2 hover:bg-blue-700 px-2 rounded transition-colors">Search</a>
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('post') }}" class="block py-2 hover:bg-blue-700 px-2 rounded transition-colors">Post Story</a>
+                <div class="border-t border-blue-700 my-2"></div>
+                <a href="{{ url_for('logout') }}" class="block py-2 hover:bg-blue-700 px-2 rounded transition-colors">Logout ({{ current_user.username }})</a>
+            {% else %}
+                <div class="border-t border-blue-700 my-2"></div>
+                <a href="{{ url_for('login') }}" class="block py-2 hover:bg-blue-700 px-2 rounded transition-colors">Login</a>
+                <a href="{{ url_for('signup') }}" class="block py-2 hover:bg-blue-700 px-2 rounded transition-colors">Sign Up</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>

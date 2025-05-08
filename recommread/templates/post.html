@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}RecommRead - Share Your Story{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+    <div class="bg-white shadow-md rounded-lg p-6">
+        <h1 class="text-2xl font-bold text-gray-800 mb-2 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+            Share Your Story
+        </h1>
+        <p class="text-gray-600 mb-6">Share your thoughts, reviews, or literary experiences with the community</p>
+        
+        <form method="POST" action="{{ url_for('post') }}">
+            {{ form.hidden_tag() }}
+            
+            <div class="mb-6">
+                <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                {{ form.title(class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500", placeholder="Enter a title for your story") }}
+                {% if form.title.errors %}
+                    <div class="text-red-500 text-sm mt-1">
+                        {% for error in form.title.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="mb-6">
+                <label for="content" class="block text-sm font-medium text-gray-700 mb-1">Content</label>
+                {{ form.content(class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500", rows=8, placeholder="Write your story here...") }}
+                {% if form.content.errors %}
+                    <div class="text-red-500 text-sm mt-1">
+                        {% for error in form.content.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <div id="character-counter" class="text-gray-500 text-sm mt-1">0 characters (2000 remaining)</div>
+            </div>
+            
+            <div class="flex justify-between items-center">
+                <a href="{{ url_for('index') }}" class="text-gray-600 hover:text-gray-800 transition-colors">
+                    Cancel
+                </a>
+                
+                {{ form.submit(class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md shadow transition-colors") }}
+            </div>
+        </form>
+    </div>
+    
+    <div class="bg-gray-100 rounded-lg p-6 mt-8">
+        <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Posting Guidelines
+        </h2>
+        
+        <ul class="list-disc list-inside text-gray-700 space-y-2">
+            <li>Keep your content respectful and constructive</li>
+            <li>Share book reviews, reading experiences, or literary thoughts</li>
+            <li>Avoid sharing personal information</li>
+            <li>No spamming or excessive self-promotion</li>
+            <li>Content that violates our community guidelines may be removed</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

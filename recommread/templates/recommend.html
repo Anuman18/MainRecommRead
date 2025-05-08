@@ -1,24 +1,19 @@
 {% extends 'base.html' %}
 
-{% block title %}RecommRead - Book Recommendations{% endblock %}
+{% block title %}RecommRead - AI Book Recommendations{% endblock %}
 
 {% block content %}
 <div class="max-w-4xl mx-auto">
-    <div class="bg-white shadow-md rounded-lg p-6 mb-8">
-        <h1 class="text-2xl font-bold text-gray-800 mb-2 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-            </svg>
-            Book Recommendations
-        </h1>
-        <p class="text-gray-600 mb-6">Tell us what books you've enjoyed, and we'll recommend similar titles you might like</p>
+    <div class="bg-white shadow-md rounded-lg p-8 mb-10 border-l-4 border-primary-900" data-aos="fade-up">
+        <h1 class="text-3xl font-serif font-bold text-primary-900 mb-4 leading-tight">Personalized Book <span class="text-shadow">Recommendations</span></h1>
+        <p class="text-gray-600 mb-6">Our AI will suggest books tailored to your preferences and reading history</p>
         
         <form method="POST" action="{{ url_for('recommend') }}">
             {{ form.hidden_tag() }}
             
             <div class="mb-6">
-                <label for="books" class="block text-sm font-medium text-gray-700 mb-2">Books You've Read</label>
-                {{ form.books(class="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500", rows=3, placeholder="Enter book titles separated by commas (e.g. To Kill a Mockingbird, 1984, The Hobbit)") }}
+                <label for="books" class="block text-gray-700 font-medium mb-2">{{ form.books.label }}</label>
+                {{ form.books(class="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-900 focus:border-transparent", rows=3, placeholder="Enter book titles separated by commas (e.g. To Kill a Mockingbird, 1984, The Hobbit)") }}
                 {% if form.books.errors %}
                     <div class="text-red-500 text-sm mt-1">
                         {% for error in form.books.errors %}
@@ -26,46 +21,104 @@
                         {% endfor %}
                     </div>
                 {% endif %}
-                <p class="text-gray-500 text-xs mt-1">Separate multiple titles with commas</p>
+                <p class="text-gray-500 text-sm mt-1">Separate multiple titles with commas</p>
             </div>
             
-            {{ form.submit(class="w-full sm:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md shadow transition-colors flex items-center justify-center") }}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <label for="age_range" class="block text-gray-700 font-medium mb-2">{{ form.age_range.label }}</label>
+                    {{ form.age_range(class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-900 focus:border-transparent") }}
+                    {% if form.age_range.errors %}
+                        <div class="text-red-500 text-sm mt-1">
+                            {% for error in form.age_range.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div>
+                    <label for="favorite_genres" class="block text-gray-700 font-medium mb-2">{{ form.favorite_genres.label }}</label>
+                    <div class="flex flex-wrap gap-2 p-3 border border-gray-300 rounded-md bg-gray-50 max-h-40 overflow-y-auto">
+                        {% for subfield in form.favorite_genres %}
+                            <div class="flex items-center">
+                                {{ subfield(class="mr-2 h-4 w-4 rounded border-gray-300 text-primary-900 focus:ring-primary-900") }}
+                                {{ subfield.label(class="text-sm text-gray-700") }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {% if form.favorite_genres.errors %}
+                        <div class="text-red-500 text-sm mt-1">
+                            {% for error in form.favorite_genres.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <p class="text-gray-500 text-sm mt-1">Select up to 3 genres for better recommendations</p>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                {{ form.submit(class="px-8 py-3 bg-primary-900 hover:bg-primary-800 text-white font-semibold rounded-md shadow-lg transition-all btn-hover-effect") }}
+            </div>
         </form>
     </div>
     
     {% if recommendations %}
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">Your Personalized Recommendations</h2>
+        <h2 class="text-2xl font-serif font-bold text-primary-900 mb-6 flex items-center" data-aos="fade-right">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+            Your AI-Powered Recommendations
+        </h2>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             {% for book in recommendations %}
-                <div class="bg-white shadow-md rounded-lg p-6 book-card">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-1">{{ book.title }}</h3>
-                    <p class="text-blue-600 font-medium mb-3">{{ book.author }}</p>
-                    
-                    <div class="flex items-center text-sm text-gray-500 mb-3">
-                        <span class="px-2 py-1 bg-gray-100 rounded-full">{{ book.genre }}</span>
-                    </div>
-                    
-                    <p class="text-gray-600 mb-4">{{ book.description }}</p>
-                    
-                    <div class="flex justify-end">
-                        <a href="{{ url_for('search', query=book.title, search_type='title') }}" class="text-blue-600 hover:text-blue-800 font-medium transition-colors flex items-center">
-                            Find Similar
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                            </svg>
-                        </a>
+                <div class="bg-white shadow-lg rounded-lg overflow-hidden book-card" data-aos="fade-up" data-aos-delay="{{ loop.index * 100 }}">
+                    <div class="flex flex-col md:flex-row">
+                        <div class="md:w-1/3 bg-gray-100 flex items-center justify-center p-4">
+                            {% if book.cover_url %}
+                                <img src="{{ book.cover_url }}" alt="{{ book.title }} cover" class="h-48 object-contain shadow-md rounded-md" onerror="this.onerror=null; this.src='https://via.placeholder.com/150x220/f8f9fa/212529?text=No+Cover';">
+                            {% else %}
+                                <div class="h-48 w-32 bg-gray-200 rounded-md flex items-center justify-center text-gray-400 text-center p-4">
+                                    <span>Cover not available</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="md:w-2/3 p-6">
+                            <h3 class="text-xl font-serif font-bold text-primary-900 mb-1 book-title">{{ book.title }}</h3>
+                            <p class="text-primary-700 font-medium mb-3">{{ book.author }}</p>
+                            
+                            <p class="text-gray-700 mb-4 text-sm">{{ book.description }}</p>
+                            
+                            <div class="mt-auto pt-4 flex justify-end">
+                                <a href="{{ url_for('search', query=book.title, search_type='title') }}" class="text-primary-900 hover:text-primary-700 font-medium transition-colors flex items-center animated-underline">
+                                    Find Similar
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
     {% elif request.method == 'POST' %}
-        <div class="bg-white shadow-md rounded-lg p-8 text-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <div class="bg-white shadow-md rounded-lg p-8 text-center" data-aos="fade-up">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 mx-auto text-gray-400 mb-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <h3 class="text-xl font-semibold text-gray-800 mb-2">No recommendations found</h3>
-            <p class="text-gray-600">We couldn't find any recommendations based on the books you entered. Try entering different book titles or check your spelling.</p>
+            <h3 class="text-2xl font-serif font-bold text-primary-900 mb-3">No Recommendations Found</h3>
+            <p class="text-gray-600 mb-4 max-w-lg mx-auto">We couldn't find any recommendations based on your preferences. Try entering different book titles or selecting different genres.</p>
+            
+            <a href="{{ url_for('recommend') }}" class="inline-flex items-center px-6 py-3 bg-primary-900 hover:bg-primary-800 text-white font-semibold rounded-md shadow transition-all btn-hover-effect">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                Try Again
+            </a>
         </div>
     {% endif %}
 </div>

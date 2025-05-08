@@ -5,8 +5,9 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from recommread import app, db, login_manager
 from recommread.models import User, Post, Vote
-from recommread.forms import LoginForm, SignupForm, PostForm, RecommendForm, SearchForm
+from recommread.forms import LoginForm, SignupForm, PostForm, RecommendForm, SearchForm, ProfileForm
 from recommread.recommender import recommend_books, search_books
+from recommread.ai_recommender import get_advanced_recommendations, get_book_cover_url
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -77,6 +78,35 @@ def logout():
     flash('You have been logged out', 'info')
     return redirect(url_for('index'))
 
+@app.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    form = ProfileForm()
+    
+    if request.method == 'GET':
+        # Pre-fill form with current user data
+        form.bio.data = current_user.bio
+        form.favorite_book.data = current_user.favorite_book
+        form.favorite_author.data = current_user.favorite_author
+        if current_user.reading_preferences:
+            form.reading_preferences.data = current_user.reading_preferences.split(',')
+    
+    if form.validate_on_submit():
+        # Update user profile
+        current_user.bio = form.bio.data
+        current_user.favorite_book = form.favorite_book.data
+        current_user.favorite_author = form.favorite_author.data
+        
+        # Store reading preferences as comma-separated string
+        if form.reading_preferences.data:
+            current_user.reading_preferences = ','.join(form.reading_preferences.data)
+        
+        db.session.commit()
+        flash('Your profile has been updated', 'success')
+        return redirect(url_for('profile'))
+    
+    return render_template('profile.html', form=form, user=current_user)
+
 @app.route('/post', methods=['GET', 'POST'])
 @login_required
 def post():
@@ -100,11 +130,42 @@ def post():
 def recommend():
     form = RecommendForm()
     recommendations = []
+    covers = {}
     
     if form.validate_on_submit():
-        # Get the books from the form and pass to recommender
-        read_books = [book.strip() for book in form.books.data.split(',')]
-        recommendations = recommend_books(read_books)
+        # Get user preferences from the form
+        user_preferences = {
+            'read_books': form.books.data,
+            'age_range': form.age_range.data,
+            'favorite_genres': form.favorite_genres.data
+        }
+        
+        # Save user preferences
+        if user_preferences['favorite_genres']:
+            current_user.favorite_genres = ','.join(user_preferences['favorite_genres'])
+        current_user.age_range = user_preferences['age_range']
+        db.session.commit()
+        
+        # Get AI-powered recommendations
+        try:
+            ai_recommendations = get_advanced_recommendations(user_preferences)
+            
+            if ai_recommendations:
+                # Add cover URLs
+                for book in ai_recommendations:
+                    book['cover_url'] = get_book_cover_url(book['title'], book.get('author', ''))
+                recommendations = ai_recommendations
+            else:
+                # Fallback to basic recommendations if AI fails
+                read_books = [book.strip() for book in form.books.data.split(',')]
+                recommendations = recommend_books(read_books)
+                flash("AI recommendations unavailable. Using basic recommendations instead.", "warning")
+        except Exception as e:
+            # Log the error and fall back to basic recommendations
+            print(f"AI recommendation error: {str(e)}")
+            read_books = [book.strip() for book in form.books.data.split(',')]
+            recommendations = recommend_books(read_books)
+            flash("There was an issue with our AI recommendation system. Using basic recommendations instead.", "warning")
     
     return render_template('recommend.html', form=form, recommendations=recommendations)
 

@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+
+{% block title %}RecommRead - Your Profile{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="bg-white shadow-md rounded-lg p-8 mb-10 border-l-4 border-primary-900" data-aos="fade-up">
+        <h1 class="text-3xl font-serif font-bold text-primary-900 mb-4 leading-tight">Your Reading Profile</h1>
+        <p class="text-gray-600 mb-6">Customize your profile and reading preferences</p>
+        
+        <div class="flex flex-col md:flex-row gap-8">
+            <div class="md:w-1/3">
+                <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
+                    <div class="text-center mb-4">
+                        <div class="w-24 h-24 bg-primary-900 text-white rounded-full flex items-center justify-center text-3xl font-bold mx-auto">
+                            {{ user.username[0]|upper }}
+                        </div>
+                        <h3 class="mt-4 font-serif text-xl font-bold">{{ user.username }}</h3>
+                        <p class="text-gray-500 text-sm">Member since {{ user.created_at.strftime('%B %Y') }}</p>
+                    </div>
+                    
+                    <div class="mt-6">
+                        {% if user.bio %}
+                            <p class="text-gray-700">{{ user.bio }}</p>
+                        {% else %}
+                            <p class="text-gray-500 italic">No bio yet. Add one to tell others about yourself!</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mt-4 pt-4 border-t border-gray-200">
+                        {% if user.favorite_book %}
+                            <div class="mb-2">
+                                <span class="text-gray-600 font-medium">Favorite Book:</span>
+                                <span class="text-primary-900">{{ user.favorite_book }}</span>
+                            </div>
+                        {% endif %}
+                        
+                        {% if user.favorite_author %}
+                            <div class="mb-2">
+                                <span class="text-gray-600 font-medium">Favorite Author:</span>
+                                <span class="text-primary-900">{{ user.favorite_author }}</span>
+                            </div>
+                        {% endif %}
+                        
+                        {% if user.reading_preferences %}
+                            <div class="mb-2">
+                                <span class="text-gray-600 font-medium">Reading Preferences:</span>
+                                <div class="flex flex-wrap gap-1 mt-1">
+                                    {% for pref in user.reading_preferences.split(',') %}
+                                        <span class="px-2 py-1 bg-gray-200 text-gray-700 text-xs rounded-full">{{ pref }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+                        
+                        {% if user.favorite_genres %}
+                            <div class="mt-3">
+                                <span class="text-gray-600 font-medium">Favorite Genres:</span>
+                                <div class="flex flex-wrap gap-1 mt-1">
+                                    {% for genre in user.favorite_genres.split(',') %}
+                                        <span class="px-2 py-1 bg-gray-200 text-gray-700 text-xs rounded-full">{{ genre }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="md:w-2/3" data-aos="fade-left" data-aos-delay="200">
+                <form method="POST" action="{{ url_for('profile') }}">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="mb-4">
+                        <label for="bio" class="block text-gray-700 font-medium mb-2">{{ form.bio.label }}</label>
+                        {{ form.bio(class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-900 focus:border-transparent", rows=4, placeholder="Tell us about yourself and your reading interests...") }}
+                        {% if form.bio.errors %}
+                            <div class="text-red-500 text-sm mt-1">
+                                {% for error in form.bio.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label for="favorite_book" class="block text-gray-700 font-medium mb-2">{{ form.favorite_book.label }}</label>
+                            {{ form.favorite_book(class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-900 focus:border-transparent", placeholder="The Great Gatsby...") }}
+                            {% if form.favorite_book.errors %}
+                                <div class="text-red-500 text-sm mt-1">
+                                    {% for error in form.favorite_book.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div>
+                            <label for="favorite_author" class="block text-gray-700 font-medium mb-2">{{ form.favorite_author.label }}</label>
+                            {{ form.favorite_author(class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-900 focus:border-transparent", placeholder="Jane Austen...") }}
+                            {% if form.favorite_author.errors %}
+                                <div class="text-red-500 text-sm mt-1">
+                                    {% for error in form.favorite_author.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label for="reading_preferences" class="block text-gray-700 font-medium mb-2">{{ form.reading_preferences.label }}</label>
+                        <div class="flex flex-wrap gap-4">
+                            {% for subfield in form.reading_preferences %}
+                                <div class="flex items-center">
+                                    {{ subfield(class="mr-2 h-5 w-5 rounded border-gray-300 text-primary-900 focus:ring-primary-900") }}
+                                    {{ subfield.label(class="text-gray-700") }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {% if form.reading_preferences.errors %}
+                            <div class="text-red-500 text-sm mt-1">
+                                {% for error in form.reading_preferences.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="text-right">
+                        {{ form.submit(class="px-6 py-3 bg-primary-900 hover:bg-primary-800 text-white font-semibold rounded-md shadow-lg transition-all btn-hover-effect") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mb-10">
+        <h2 class="text-2xl font-serif font-bold text-primary-900 mb-6 flex items-center" data-aos="fade-right">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+            </svg>
+            Your Stories
+        </h2>
+        
+        {% if user.posts.count() > 0 %}
+            <div class="space-y-6">
+                {% for post in user.posts %}
+                    <div class="bg-white shadow-md rounded-lg p-6 post-card" data-aos="fade-up" data-aos-delay="{{ loop.index * 100 }}">
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-xl font-serif font-bold text-primary-900 mb-2">{{ post.title }}</h3>
+                            <div class="text-gray-500 text-sm bg-gray-100 px-2 py-1 rounded-full">{{ post.timestamp.strftime('%B %d, %Y') }}</div>
+                        </div>
+                        
+                        <div class="text-gray-700 mb-5 mt-2 rich-content">{{ post.content }}</div>
+                        
+                        <div class="flex justify-end items-center pt-3 border-t border-gray-100">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-gray-500 text-sm">{{ post.vote_count }} votes</span>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="bg-white shadow-md rounded-lg p-8 text-center" data-aos="fade-up">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                </svg>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">No stories yet</h3>
+                <p class="text-gray-600 mb-6">You haven't shared any stories with the community yet.</p>
+                
+                <a href="{{ url_for('post') }}" class="inline-flex items-center px-6 py-3 bg-primary-900 hover:bg-primary-800 text-white font-semibold rounded-md shadow-lg transition-all btn-hover-effect">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    Create Your First Story
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

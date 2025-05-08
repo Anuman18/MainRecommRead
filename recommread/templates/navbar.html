@@ -16,6 +16,7 @@
                 <a href="{{ url_for('search') }}" class="hover:text-gray-300 transition-colors py-2 animated-underline">Search</a>
                 {% if current_user.is_authenticated %}
                     <a href="{{ url_for('post') }}" class="hover:text-gray-300 transition-colors py-2 animated-underline">Post Story</a>
+                    <a href="{{ url_for('profile') }}" class="hover:text-gray-300 transition-colors py-2 animated-underline">Profile</a>
                     <a href="{{ url_for('logout') }}" class="ml-2 px-4 py-2 bg-white text-primary-900 rounded-md hover:bg-gray-200 transition-colors btn-hover-effect">Logout</a>
                 {% else %}
                     <a href="{{ url_for('login') }}" class="hover:text-gray-300 transition-colors py-2 animated-underline">Login</a>
@@ -38,6 +39,7 @@
             <a href="{{ url_for('search') }}" class="block py-2 hover:bg-primary-800 px-2 rounded transition-colors">Search</a>
             {% if current_user.is_authenticated %}
                 <a href="{{ url_for('post') }}" class="block py-2 hover:bg-primary-800 px-2 rounded transition-colors">Post Story</a>
+                <a href="{{ url_for('profile') }}" class="block py-2 hover:bg-primary-800 px-2 rounded transition-colors">Profile</a>
                 <div class="border-t border-primary-800 my-2"></div>
                 <a href="{{ url_for('logout') }}" class="block py-2 px-4 bg-white text-primary-900 rounded transition-colors">Logout ({{ current_user.username }})</a>
             {% else %}

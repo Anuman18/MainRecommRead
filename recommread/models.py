@@ -9,6 +9,16 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(256), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
+    # Profile information
+    bio = db.Column(db.String(500))
+    favorite_book = db.Column(db.String(100))
+    favorite_author = db.Column(db.String(100))
+    reading_preferences = db.Column(db.String(100))  # Stored as comma-separated values
+    
+    # Reading preferences
+    age_range = db.Column(db.String(20), default='Adult')
+    favorite_genres = db.Column(db.String(200))  # Stored as comma-separated values
+    
     # Relationships
     posts = db.relationship('Post', backref='author', lazy='dynamic')
     votes = db.relationship('Vote', backref='user', lazy='dynamic')

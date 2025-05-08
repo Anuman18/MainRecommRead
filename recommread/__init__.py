@@ -46,3 +46,9 @@ from recommread import routes
 with app.app_context():
     from recommread import models
     db.create_all()
+    
+    # Check if we need to seed the database with sample data
+    from recommread.models import User
+    if User.query.count() == 0:
+        from recommread.seed_data import seed_database
+        seed_database()

@@ -4,19 +4,19 @@
 
 {% block content %}
 <div class="max-w-4xl mx-auto">
-    <div class="bg-white shadow-md rounded-lg p-6 mb-8">
-        <h1 class="text-3xl font-bold text-gray-800 mb-2">Welcome to RecommRead</h1>
-        <p class="text-gray-600 mb-4">Discover new books and share your thoughts with our community</p>
+    <div class="bg-white shadow-md rounded-lg p-8 mb-10 border-l-4 border-primary-900" data-aos="fade-up">
+        <h1 class="text-4xl font-serif font-bold text-primary-900 mb-4 leading-tight">Discover Your Next <span class="text-shadow">Literary Adventure</span></h1>
+        <p class="text-gray-600 mb-6 text-lg">Join our community of book lovers to find personalized recommendations and share your reading experiences</p>
         
         <div class="flex flex-wrap gap-4">
-            <a href="{{ url_for('recommend') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded shadow transition-colors flex items-center">
+            <a href="{{ url_for('recommend') }}" class="bg-primary-900 hover:bg-primary-800 text-white font-semibold py-3 px-6 rounded-md shadow-lg transition-all flex items-center btn-hover-effect">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                 </svg>
                 Get Book Recommendations
             </a>
             
-            <a href="{{ url_for('search') }}" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded shadow transition-colors flex items-center">
+            <a href="{{ url_for('search') }}" class="bg-white border-2 border-primary-900 text-primary-900 hover:bg-gray-50 font-semibold py-3 px-6 rounded-md shadow transition-all flex items-center btn-hover-effect">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
@@ -24,14 +24,14 @@
             </a>
             
             {% if current_user.is_authenticated %}
-            <a href="{{ url_for('post') }}" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded shadow transition-colors flex items-center">
+            <a href="{{ url_for('post') }}" class="bg-white border-2 border-primary-900 text-primary-900 hover:bg-gray-50 font-semibold py-3 px-6 rounded-md shadow transition-all flex items-center btn-hover-effect">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                 </svg>
                 Share Your Story
             </a>
             {% else %}
-            <a href="{{ url_for('login') }}" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded shadow transition-colors flex items-center">
+            <a href="{{ url_for('login') }}" class="bg-white border-2 border-primary-900 text-primary-900 hover:bg-gray-50 font-semibold py-3 px-6 rounded-md shadow transition-all flex items-center btn-hover-effect">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
                 </svg>
@@ -42,46 +42,46 @@
     </div>
     
     <!-- Story Feed -->
-    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+    <h2 class="text-2xl font-serif font-bold text-primary-900 mb-6 flex items-center" data-aos="fade-right">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
         </svg>
-        Community Stories
+        Literary Discussions & Reviews
     </h2>
     
     {% if posts.items %}
         <div class="space-y-6">
             {% for post in posts.items %}
-                <div class="bg-white shadow-md rounded-lg p-6 post-card">
+                <div class="bg-white shadow-md rounded-lg p-6 post-card" data-aos="fade-up" data-aos-delay="{{ loop.index * 100 }}">
                     <div class="flex justify-between items-start">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ post.title }}</h3>
-                        <div class="text-gray-500 text-sm">{{ post.timestamp.strftime('%B %d, %Y') }}</div>
+                        <h3 class="text-xl font-serif font-bold text-primary-900 mb-2">{{ post.title }}</h3>
+                        <div class="text-gray-500 text-sm bg-gray-100 px-2 py-1 rounded-full">{{ post.timestamp.strftime('%B %d, %Y') }}</div>
                     </div>
                     
-                    <div class="text-gray-600 mb-4">{{ post.content }}</div>
+                    <div class="text-gray-700 mb-5 mt-2 rich-content">{{ post.content }}</div>
                     
-                    <div class="flex justify-between items-center">
-                        <div class="text-gray-500 text-sm">
-                            Posted by <span class="font-medium">{{ post.author.username }}</span>
+                    <div class="flex justify-between items-center pt-3 border-t border-gray-100">
+                        <div class="text-primary-600 text-sm">
+                            <span class="font-medium">{{ post.author.username }}</span> shared this review
                         </div>
                         
-                        <div class="flex items-center space-x-3">
+                        <div class="flex items-center space-x-4">
                             {% if current_user.is_authenticated %}
-                                <a href="{{ url_for('vote', post_id=post.id, action='upvote') }}" class="vote-btn flex items-center text-gray-500 hover:text-green-600 transition-colors {% if post.user_vote(current_user.id) == 1 %}text-green-600{% endif %}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <a href="{{ url_for('vote', post_id=post.id, action='upvote') }}" class="vote-btn flex items-center text-gray-500 hover:text-primary-900 transition-colors {% if post.user_vote(current_user.id) == 1 %}text-primary-900{% endif %}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
                                     </svg>
                                 </a>
                                 
-                                <span class="text-gray-700 font-semibold">{{ post.vote_count }}</span>
+                                <span class="text-primary-900 font-bold text-lg">{{ post.vote_count }}</span>
                                 
-                                <a href="{{ url_for('vote', post_id=post.id, action='downvote') }}" class="vote-btn flex items-center text-gray-500 hover:text-red-600 transition-colors {% if post.user_vote(current_user.id) == -1 %}text-red-600{% endif %}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <a href="{{ url_for('vote', post_id=post.id, action='downvote') }}" class="vote-btn flex items-center text-gray-500 hover:text-primary-900 transition-colors {% if post.user_vote(current_user.id) == -1 %}text-primary-900{% endif %}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                                     </svg>
                                 </a>
                             {% else %}
-                                <span class="text-gray-700 font-semibold">{{ post.vote_count }} votes</span>
+                                <span class="text-primary-900 font-bold">{{ post.vote_count }} <span class="text-sm font-normal text-gray-500">votes</span></span>
                             {% endif %}
                         </div>
                     </div>
@@ -120,26 +120,26 @@
             {% endif %}
         </div>
     {% else %}
-        <div class="bg-white shadow-md rounded-lg p-8 text-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+        <div class="bg-white shadow-md rounded-lg p-8 text-center" data-aos="fade-up">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 mx-auto text-primary-300 mb-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
             </svg>
-            <h3 class="text-xl font-semibold text-gray-800 mb-2">No stories yet</h3>
-            <p class="text-gray-600 mb-6">Be the first to share your thoughts with our community!</p>
+            <h3 class="text-2xl font-serif font-bold text-primary-900 mb-3">Share Your Reading Journey</h3>
+            <p class="text-gray-600 mb-8 max-w-lg mx-auto">Be the first to contribute to our literary community. Share your thoughts, reviews, and recommendations with fellow readers.</p>
             
             {% if current_user.is_authenticated %}
-                <a href="{{ url_for('post') }}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 transition-colors">
+                <a href="{{ url_for('post') }}" class="inline-flex items-center px-8 py-3 bg-primary-900 hover:bg-primary-800 text-white font-semibold rounded-md shadow-lg transition-all btn-hover-effect">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                     </svg>
-                    Create the first story
+                    Create the First Story
                 </a>
             {% else %}
-                <a href="{{ url_for('login') }}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 transition-colors">
+                <a href="{{ url_for('login') }}" class="inline-flex items-center px-8 py-3 bg-primary-900 hover:bg-primary-800 text-white font-semibold rounded-md shadow-lg transition-all btn-hover-effect">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
                     </svg>
-                    Log in to create a story
+                    Log in to Join the Community
                 </a>
             {% endif %}
         </div>
